@@ -6,6 +6,9 @@
 %}
 
 // Section 1b: YACC/Bison declarations
+/* this makes every semantic value a double, so one type holds integers and decimals */
+%define api.value.type {double}
+
 /*declare tokens*/
 %token NUMBER
 %token ADD SUB MUL DIV
@@ -13,7 +16,7 @@
 
 %%  // Section 2: Grammar rules
 calclist: /*nothing*/		//matches at beginning of input
-  | calclist exp EOL 		{printf("=%d\n", $2); } //EOL is end of an expression
+  | calclist exp EOL 		{printf("=%.15g\n", $2); } //EOL is end of an expression
   | calclist QUIT 			{printf("Exitting..."); return 0;}
   ;
 
