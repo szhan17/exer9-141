@@ -11,6 +11,7 @@ NUM	([0-9]+(\.[0-9]*)?|\.[0-9]+)
 "-"			{return SUB;}
 "/"			{return DIV;}
 "*"			{return MUL;}
+"^"			{return POW;}
 {NUM}		{yylval = atof(yytext); return NUMBER;}   /* converts matched text to double and pass it to the parser */
 \n			{return EOL;}
 [[:space:]]	{/*ignore white space*/}

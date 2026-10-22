@@ -1,6 +1,7 @@
 /*simplest version of calculator: from O'Reilly Media, Inc. 2021*/
 %{  // Section 1a: C declarations
   #include<stdio.h>
+  #include<math.h>
   int yylex();
   void yyerror(char *s);
 %}
@@ -12,6 +13,7 @@
 /*declare tokens*/
 %token NUMBER
 %token ADD SUB MUL DIV
+%token POW
 %token EOL QUIT
 
 %%  // Section 2: Grammar rules
@@ -25,12 +27,24 @@ exp: factor 				//default $$ = $1
   | exp SUB factor 			{$$ = $1 - $3;}
   ;
 
-factor: term				//default $$ = $1
-  | factor MUL term 		{$$ = $1 * $3;}
-  | factor DIV term 		{$$ = $1 / $3;}
+factor: power				//default $$ = $1
+  | factor MUL power 		{$$ = $1 * $3;}
+  | factor DIV power 		{$$ = $1 / $3;}
   ;
 
-term: NUMBER 				//default $$ = $1
+/* keeping power on the right makes chained exponents right-associative */
+power: term                   //default $$ = $1
+  | term POW power            {
+      double whole_part;
+      if (modf($3, &whole_part) != 0.0) {
+        yyerror("exponent must be an integer!");
+        YYERROR;
+      }
+      $$ = pow($1, $3);
+    }
+  ;
+
+term: NUMBER                  //default $$ = $1
   ;
 %%
 
