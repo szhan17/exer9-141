@@ -55,20 +55,35 @@ extern int yydebug;
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
     NUMBER = 258,                  /* NUMBER  */
-    ADD = 259,                     /* ADD  */
-    SUB = 260,                     /* SUB  */
-    MUL = 261,                     /* MUL  */
-    DIV = 262,                     /* DIV  */
-    POW = 263,                     /* POW  */
-    EOL = 264,                     /* EOL  */
-    QUIT = 265                     /* QUIT  */
+    VAR = 259,                     /* VAR  */
+    ADD = 260,                     /* ADD  */
+    SUB = 261,                     /* SUB  */
+    MUL = 262,                     /* MUL  */
+    DIV = 263,                     /* DIV  */
+    POW = 264,                     /* POW  */
+    LPAREN = 265,                  /* LPAREN  */
+    RPAREN = 266,                  /* RPAREN  */
+    ASSIGN = 267,                  /* ASSIGN  */
+    EOL = 268,                     /* EOL  */
+    QUIT = 269,                    /* QUIT  */
+    INVALID = 270                  /* INVALID  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef double YYSTYPE;
+union YYSTYPE
+{
+#line 15 "simple_calc.y"
+
+  double number;
+  int letter;
+
+#line 84 "simple_calc.tab.h"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
